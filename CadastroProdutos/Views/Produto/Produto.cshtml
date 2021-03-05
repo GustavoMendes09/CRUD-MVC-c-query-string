@@ -3,7 +3,7 @@
     ViewBag.Title = "Produto";
 }
 
-<form>
+<form id="formCadastro">
     <div class="row">
         <div class="form-group col-sm-12">
             <label for="">Nome</label>
@@ -39,6 +39,42 @@
 </form>
 
 
+<form id="formAtualizar" hidden>
+    <div class="row">
+        <div class="form-group col-sm-12">
+            <label for="">Nome</label>
+            <input type="text" class="form-control col-sm-12" id="nomeAtt">
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-sm-12">
+            <label for="exampleInputPassword1">Descrição</label>
+            <input type="text" class="form-control col-sm-12" id="descricaoAtt">
+        </div>
+    </div>
+
+
+    <label for="exampleInputPassword1">Categoria de Produto</label>
+    <select class="form-control col-md-4" id="categoriaAtt">
+        <option value="1">Eletrônico</option>
+        <option value="2">Informática</option>
+        <option value="3">Celulares</option>
+        <option value="4">Moda</option>
+        <option value="5">Livros</option>
+    </select>
+
+    <div class="form-group form-check" style="margin-left: 400px; margin-top: -35px">
+        <input type="checkbox" class="form-check-input" id="checkAtt">
+        <label class="form-check-label" for="exampleCheck1">Perecivel?</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="btnAtt" style="margin-left: 700px; margin-top: -70px">Atualizar</button>
+
+</form>
+
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -51,42 +87,6 @@
             <th scope="col">Ação</th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Pen drive</td>
-            <td>Pen drive 8gb</td>
-            <td>Ativo</td>
-            <td>Eletrônico</td>
-            <td>Não</td>
-            <td>
-                <button type="button" class="btn btn-success">Atualizar</button>
-                <button type="button" class="btn btn-danger">Deletar</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Iphone 5s</td>
-            <td>Iphone 5s 16 gbytes - Apple</td>
-            <td>Celulares</td>
-            <td>Ativo</td>
-            <td>Não</td>
-            <td>
-                <button type="button" class="btn btn-success">Atualizar</button>
-                <button type="button" class="btn btn-danger">Deletar</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>TV LG Smart</td>
-            <td>TV LG Smart 100 pol</td>
-            <td>Eletrônico</td>
-            <td>Ativo</td>
-            <td>Não</td>
-            <td>
-                <button type="button" class="btn btn-success">Atualizar</button>
-                <button type="button" class="btn btn-danger">Deletar</button>
-            </td>
-        </tr>
+    <tbody id="bodyProduto">
     </tbody>
 </table>

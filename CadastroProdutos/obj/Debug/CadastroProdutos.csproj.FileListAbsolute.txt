@@ -118,5 +118,7 @@ C:\Users\Gustavo\source\repos\CadastroProdutos\CadastroProdutos\bin\System.Text.
 C:\Users\Gustavo\source\repos\CadastroProdutos\CadastroProdutos\bin\System.Text.Json.xml
 C:\Users\Gustavo\source\repos\CadastroProdutos\CadastroProdutos\bin\System.Threading.Tasks.Extensions.xml
 C:\Users\Gustavo\source\repos\CadastroProdutos\CadastroProdutos\bin\System.ValueTuple.xml
-C:\Users\Gustavo\source\repos\CadastroProdutos\CadastroProdutos\bin\EntityFramework.dll
-C:\Users\Gustavo\source\repos\CadastroProdutos\CadastroProdutos\bin\EntityFramework.xml
+C:\Users\Gustavo\source\repos\CadastroProdutos\CadastroProdutos\bin\Google.Protobuf.dll
+C:\Users\Gustavo\source\repos\CadastroProdutos\CadastroProdutos\bin\MySql.Data.dll
+C:\Users\Gustavo\source\repos\CadastroProdutos\CadastroProdutos\bin\Google.Protobuf.xml
+C:\Users\Gustavo\source\repos\CadastroProdutos\CadastroProdutos\bin\MySql.Data.xml

@@ -1,9 +1,78 @@
 ﻿$(document).ready(function () {
 
-    cadastrar();
-
+    consultarProduto();
 
 });
+
+var id;
+
+function cadSucesso() {
+    
+    consultarProduto()
+}
+
+
+function consultarProduto() {
+    
+    requisicaoAssincrona("POST", "../Produto/ConsultaProduto", "", consultaSucesso, consultaSucesso)
+}
+
+function consultaSucesso(listProduto) {
+    
+    var produtos = JSON.parse(listProduto.obj)
+    $('#bodyProduto').html("");
+
+    $.each(produtos, function (i, obj) {
+
+        var ativo = obj.Ativo == 1 ? "Ativo" : "Inativo"
+        var Perecivel = obj.Perecivel == 1 ? "Sim" : "Não"
+
+        switch (obj.CategoriaId) {
+
+            case 1:
+                obj.CategoriaId = "Eletrônico"
+                break;
+            case 2:
+                obj.CategoriaId = "Informatica"
+                break;
+            case 3:
+                obj.CategoriaId = "Celulares"
+                break;
+            case 4:
+                obj.CategoriaId = "Moda"
+                break;
+            case 5:
+                obj.CategoriaId = "Livros"
+                break;
+        }
+
+        
+        $('#bodyProduto').append(
+            
+            '<tr>\
+                <th scope = "row" id="idProd">' + obj.Id+ '</th>\
+            <td id="nomProd">' + obj.Nome + '</td>\
+            <td id="descProd">' + obj.Descricao + '</td>\
+            <td id="catProd">' + obj.CategoriaId + '</td>\
+            <td id="atvProd">' + ativo + '</td>\
+            <td id="perProd">' + Perecivel + '</td>\
+            <td>\
+                <button type="button" class="btn btn-success btnAtt">Atualizar</button>\
+                <button type="button" class="btn btn-danger btnDel">Deletar</button>\
+            </td>\
+        </tr >'
+
+        );
+
+
+
+    });
+
+    cadastrar();
+    atualizarProduto();
+    deletarProduto();
+
+}
 
 function cadastrar() {
     $("#btnCadastro").on("click", function () {
@@ -11,33 +80,83 @@ function cadastrar() {
         let nome = $("#nome").val();
         let descricao = $("#descricao").val();
         let categoria = $("#categoria").val();
-        let perecivel = $("#check").val();
-        let categoriaId = 1
 
-        if (nome.length <= 0 || descricao.length <= 0)
-        {
+        if (nome.length <= 0 || descricao.length <= 0) {
             alert("Todos os campos devem estar preenchidos")
-        }
+        } else {
 
         var cadastro = {
             Nome: nome,
             Descricao: descricao,
-            Categoria: categoria,
-            Perecivel: perecivel,
-            CategoriaId: categoriaId
+            CategoriaId: categoria,
+            Perecivel: 0,
+            Ativo: 1,
         }
-        
-        requisicaoAssincrona("POST", "../Produto/Cadastrar", cadastro, cadSucesso());
+
+        requisicaoAssincrona("POST", "../Produto/Cadastrar", cadastro, cadSucesso, cadSucesso);
+        }
     });
+
 }
 
-function cadSucesso() {
-    
+
+function atualizarProduto() {
+
+    $('#bodyProduto').on('click', ".btnAtt", function (){
+
+        $('#formCadastro').attr('hidden', true)
+        $('#formAtualizar').attr('hidden', false)
+
+        id = $(this).parent().parent().find('#idProd').html();
+        let nomeAtt = $(this).parent().parent().find('#nomProd').html();
+        let descricaoAtt = $(this).parent().parent().find('#descProd').html();
+        let categoriaAtt = $(this).parent().parent().find('#catProd').html();
+        
+        $('#nomeAtt').val(nomeAtt);
+        $('#descricaoAtt').val(descricaoAtt);
+        $('#categoriaAtt').val(categoriaAtt);
+
+        $('#btnAtt').on('click', function () {
+
+            $('#formCadastro').attr('hidden', false)
+            $('#formAtualizar').attr('hidden', true)
+
+            let nome = $('#nomeAtt').val();
+            let descricao = $('#descricaoAtt').val();
+            let categoria = $('#categoriaAtt').val();
+            
+            var cadastro = {
+                Id: id,
+                Nome: nome,
+                Descricao: descricao,
+                CategoriaId: categoria,
+                Perecivel: 0,
+                Ativo: 1,
+            }
+            
+
+            requisicaoAssincrona("POST", "../Produto/Atualizar", cadastro, cadSucesso, cadSucesso);
+        });
+    });
+
+}
+
+function deletarProduto() {
+
+    $('#bodyProduto').on('click', ".btnDel", function () {
+        
+         id = $(this).parent().parent().find('#idProd').html();
+
+        json = {ID: id}
+
+        requisicaoAssincrona("POST", "../Produto/Deletar", json, cadSucesso, cadSucesso);
+
+    });
+
 }
 
 
 function requisicaoAssincrona(tipo, url, obj, sucesso, falha) {
-    
     $.ajax({
         url: url,
         type: tipo,
@@ -45,10 +164,6 @@ function requisicaoAssincrona(tipo, url, obj, sucesso, falha) {
         data: JSON.stringify(obj),
         contentType: 'application/json; charset=utf-8'
     })
-        .done(function (msg) {
-            sucesso
-        })
-        .fail(function (jqXHR, textStatus, msg) {
-            falha
-        });
+        .done (sucesso)
+        .fail(falha)
 }
