@@ -1,20 +1,16 @@
 ﻿$(document).ready(function () {
 
     consultarProduto();
+  
 
 });
 
 var id;
 
-function cadSucesso() {
-    
-    consultarProduto()
-}
-
 
 function consultarProduto() {
     
-    requisicaoAssincrona("POST", "../Produto/ConsultaProduto", "", consultaSucesso, consultaSucesso)
+    requisicaoAssincrona("POST", "../Produto/ConsultaProduto", "", consultaSucesso, cadFalha)
 }
 
 function consultaSucesso(listProduto) {
@@ -71,10 +67,10 @@ function consultaSucesso(listProduto) {
     cadastrar();
     atualizarProduto();
     deletarProduto();
-
 }
 
 function cadastrar() {
+    $("#btnCadastro").off('click');
     $("#btnCadastro").on("click", function () {
 
         let nome = $("#nome").val();
@@ -93,10 +89,13 @@ function cadastrar() {
             Ativo: 1,
         }
 
-        requisicaoAssincrona("POST", "../Produto/Cadastrar", cadastro, cadSucesso, cadSucesso);
-        }
-    });
+            requisicaoAssincrona("POST", "../Produto/Cadastrar", cadastro, cadSucesso, cadFalha);
 
+            
+        }
+        
+    });
+    
 }
 
 
@@ -135,7 +134,7 @@ function atualizarProduto() {
             }
             
 
-            requisicaoAssincrona("POST", "../Produto/Atualizar", cadastro, cadSucesso, cadSucesso);
+            requisicaoAssincrona("POST", "../Produto/Atualizar", cadastro, cadSucesso, cadFalha);
         });
     });
 
@@ -149,7 +148,7 @@ function deletarProduto() {
 
         json = {ID: id}
 
-        requisicaoAssincrona("POST", "../Produto/Deletar", json, cadSucesso, cadSucesso);
+        requisicaoAssincrona("POST", "../Produto/Deletar", json, cadSucesso, cadFalha);
 
     });
 
@@ -158,12 +157,29 @@ function deletarProduto() {
 
 function requisicaoAssincrona(tipo, url, obj, sucesso, falha) {
     $.ajax({
-        url: url,
         type: tipo,
-        dataType: "json",
+        url: url,
+        async: true,
         data: JSON.stringify(obj),
-        contentType: 'application/json; charset=utf-8'
-    })
-        .done (sucesso)
-        .fail(falha)
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        success: function (Json) {
+            sucesso(Json);
+        },
+        error: function (Json) {
+            falha(Json);
+        }
+    });
+}
+
+
+function cadFalha() {
+
+    consultarProduto();
+}
+
+
+function cadSucesso() {
+
+    consultarProduto();
 }
